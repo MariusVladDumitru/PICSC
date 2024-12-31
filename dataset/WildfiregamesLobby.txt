@@ -1,0 +1,5 @@
+Wildfiregames Lobby: Lobby_IP:49.12.87.62 aka wildfiregames.com
+
+The WhoIsMe field from the addnotation.csv is the ip that connects to wildfiregames lobby (aka i connect to the wildfiregames lobby)
+
+ALL GAME data is transmitted over UDP protocol

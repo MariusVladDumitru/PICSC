@@ -1,0 +1,6 @@
+FileName,GameType,Map,P1_IP:P1_Port,P2_IP:P2_Port,Server,Client,WhoIsMe,PlayerTypes,Bot_Difficulty,Bot_Behavior,Observation
+001_Human_vs_Bot.pcapng,1v1,Acropolys_Bay_2,192.168.0.7:50379,192.168.0.2:20595,P2,P1,P1,Human:Bot,None:VeryEasy,None:Balanced,Finished
+002_Bot_vs_Bot.pcapng,1v1,Belgian_Bog_2,192.168.0.2:20595,192.168.0.2:20595,P1+P2,None,None,Bot:Bot,VeryEasy:VeryEasy,Balanced:Balanced,NotFinished_ObserverModeOnClient
+003_Bot_vs_Bot.pcapng,1v1,Belgian_Bog_2,192.168.0.2:20595,192.168.0.2:20595,P1+P2,None,None,Bot:Bot,VeryHard:VeryEasy,Aggressive:Defensive,Finished_ObserverModeOnClient
+004_Human_vs_Bot.pcapng,1v1,Belgian_Bog_2,192.168.0.7:60609,192.168.0.2:20595,P2,P1,P1,Human:Bot,None:VeryEasy,None:Balanced,Finished
+005_Human_vs_Human.pcapng,1v1,Belgian_Bog_2,192.168.0.7:20595,177.37.182.195:41991,P1,P2,P1,Human:Human,None:None,None:None,Finished

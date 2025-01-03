@@ -1,0 +1,53 @@
+this is m_type:
+	// Defines the list of message types. The order of the list must not change.
+	// The message types having a negative value are used internally and not sent
+	// over the network. The message types used for network communication have
+	// positive values.
+	enum NetMessageType
+	{
+		NMT_CONNECT_COMPLETE = -256,
+		NMT_CONNECTION_LOST,
+		NMT_INVALID = 0,
+
+		NMT_SERVER_HANDSHAKE,
+		NMT_CLIENT_HANDSHAKE,
+		NMT_SERVER_HANDSHAKE_RESPONSE,
+
+		NMT_AUTHENTICATE,
+		NMT_AUTHENTICATE_RESULT,
+
+		NMT_CHAT,
+		NMT_READY,
+		NMT_CLEAR_ALL_READY,
+		NMT_GAME_SETUP,
+		NMT_ASSIGN_PLAYER,
+		NMT_PLAYER_ASSIGNMENT,
+
+		NMT_FILE_TRANSFER_REQUEST,
+		NMT_FILE_TRANSFER_RESPONSE,
+		NMT_FILE_TRANSFER_DATA,
+		NMT_FILE_TRANSFER_ACK,
+
+		NMT_JOIN_SYNC_START,
+
+		NMT_REJOINED,
+		NMT_KICKED,
+
+		NMT_CLIENT_TIMEOUT,
+		NMT_CLIENT_PERFORMANCE,
+		NMT_CLIENTS_LOADING,
+		NMT_CLIENT_PAUSED,
+
+		NMT_LOADED_GAME,
+		NMT_GAME_START,
+		NMT_END_COMMAND_BATCH,
+
+		NMT_SYNC_CHECK,	// OOS-detection hash checking
+		NMT_SYNC_ERROR,	// OOS-detection error
+
+		NMT_SIMULATION_COMMAND
+	};
+
+	vezi:
+	- network: NetMessage.h, NetMessages.h, NetMessage.cpp
+	- libraries\win32\enet\include\enet\enet.h

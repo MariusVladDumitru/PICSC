@@ -44,6 +44,24 @@ def get_annotations():
     return annotations
 
 def parse_capture_file(capture_file):
+    """
+    Aggregates player data. Combines player info from Annotations.cvs(ip, port, type) with packets extracted from .pcapngfile.
+    A player can have outbound(send packets) and inbound(receive packets) and are marked accordingly.
+    Processes only one .pcapng file(provided as a parameter).
+    For multiple .pcapng files, call this function for each of them.
+
+    Input:
+        capture file: [string] -> name of capture file
+
+    Output:
+        Player1 + Player2: [list] -> data for Player1 and Player2 extracted from capture_file, concatenated in a single list object
+                                      Each member is the output list is a Player object.
+                                      Each Player.DataPackets member of output Player object s is a tuple: (packet, packet_type)) where packet - network packet where PlayerX is either source/destination
+                                                                                                                                       packet_type - the type of the packet: Outbound: PlayerX is the packet sender
+                                                                                                                                                                             Inbound:  PlayerX is the packet receiver.
+
+
+    """
     # get dataset annotations
     annotations = get_annotations()
     # find capture_file in addontations data. Assuming that a valid capture file is always provided
@@ -115,7 +133,7 @@ def parse_capture_file(capture_file):
             # packet does not have IP or UPD or Raw layers
             else:
                 continue
-    return Player1, Player2
+    return Player1 + Player2
 
 
 

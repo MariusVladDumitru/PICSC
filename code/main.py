@@ -9,14 +9,11 @@ for value in annotations:
     capture_files.append(value[0])
 
 # Combines P1 and P2 data from all the .pcapng files. Each member is a Player object
-Player1_Data = []
-Player2_Data = []
+Player_Data = []
 # parse capture files
 for capture_file in capture_files:
     print(f"Processing {capture_file}")
-    P1, P2 = dp.parse_capture_file(capture_file)
-    Player1_Data.append(P1) # holds objects of type Player
-    Player2_Data.append(P2) # holds objects of type Player
+    Player_Data.append(dp.parse_capture_file(capture_file)) # From a single .pcapng file, append both Player1 and Player2 data To a list
     print(f"{capture_file} is done")
 #     # aici faci vectorul mare de trasaturi care va fi trimis catre model. la vectoru asta contribuie fiecare capture file
 

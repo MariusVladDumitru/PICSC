@@ -119,21 +119,21 @@ def parse_capture_file(capture_file):
 
                 # Player1 sends the packet - outbound packet
                 if src_port == Player1.get_port() and src_ip == Player1.get_ip():
-                    udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
-                    Player1.append_data_packet((udp_packet_data, 'outbound'))
+                   # udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
+                    Player1.append_data_packet((pkt, 'outbound'))
                 # Player1 receives the packet - inbound packet
                 elif dst_port == Player1.get_port() and dst_ip == Player1.get_ip():
-                    udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
-                    Player1.append_data_packet((udp_packet_data, 'inbound'))
+                    # udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
+                    Player1.append_data_packet((pkt, 'inbound'))
 
                 # Player2 sends the packet - outbound packet
                 if src_port == Player2.get_port() and src_ip == Player2.get_ip():
-                    udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
-                    Player2.append_data_packet((udp_packet_data, 'outbound'))
+                    # udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
+                    Player2.append_data_packet((pkt, 'outbound'))
                 # Player2 receives the packet - inbound packet
                 elif dst_port == Player2.get_port() and dst_ip == Player2.get_ip():
-                    udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
-                    Player2.append_data_packet((udp_packet_data, 'inbound'))
+                   # udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
+                    Player2.append_data_packet((pkt, 'inbound'))
 
             # packet does not have IP or UPD or Raw layers
             else:

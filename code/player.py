@@ -18,7 +18,7 @@ class Player():
                                        Each member of the list is a tuple of format (packet, 'outbound'/'inbound'), represents a single packet with it's direction('inbound packet' or 'outbound packet'):
                                                 outbound: [string] -> current player sends the packet.
                                                 inbound: [string] -> current player receives the packet.
-                                                packet: [bytes] -> a stream of bytes representing the current packet UDP payload data (data of interest). This data is encoded and needs to be decoded later.
+                                                packet: [type is provided by scapy library] -> a network packet extracted from .pcapng file. Use scapy to process.
 
         """
 

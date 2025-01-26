@@ -1,0 +1,10 @@
+PICSC Roadmap:
+- Trăsături: care sunt, cod, teste, completare document online.
+- Model(Modele): arhitectură, cod, teste, completare document online.
+- Metrici de performanță: care sunt, cod, teste, completare document online. In functie de ele, daca e cazul, ajusteaza arhitectura modelului/modelelor.
+- Tehnici de integrare: completare document online.
+- Monitorizarea performantei: completare document online.
+- Completarea finala a documentului online.
+- Culegere de date noi: captura de trafic nou si reevaluarea: trasaturilor, modelului, metricilor de performanta.
+
+La final dupa ce sa scris codul complet: documentatie detaliata despre tot ce sa facut.

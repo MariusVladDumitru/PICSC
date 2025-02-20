@@ -4,6 +4,7 @@ from scapy.all import PcapReader
 from os import listdir
 import csv
 from player import Player
+from pathlib import Path
 
 def running_in_colab():
     """
@@ -20,6 +21,26 @@ def running_in_colab():
     except ImportError:
         return False
 
+def get_path():
+    """
+    This function returns different dataset paths depending where is the project running
+    Running in google colab -> returns '/content/drive/MyDrive/PICSC/dataset'
+    Running locally -> returns the absolute path of the dataset folder
+
+    Input: None
+
+    Output:
+       path_to_dataset_folder: [Path] -> path to dataset folder as absolute value.
+    """
+    if running_in_colab():
+        return '/content/drive/MyDrive/PICSC/dataset'
+    else:
+        # __file__ = W:\Active\PICSC\code\data_processing.py
+        # Path(__file__) = W:\Active\PICSC\code\data_processing.py as Path object
+        # Path(__file__).parent = W:\Active\PICSC\code\ as Path object
+        # Path(__file__).parent.parent = W:\Active\PICSC\ as Path object
+        return Path(__file__).parent.parent / 'dataset'
+
 
 def get_annotations():
     """
@@ -30,11 +51,7 @@ def get_annotations():
 
     Output: [list] ->tt Data from addnontations.csv
     """
-
-    if running_in_colab():
-        dataset_root ='/content/drive/MyDrive/Datasets/PICSC'
-    else:
-        dataset_root = '../dataset'
+    dataset_root = get_path()
     filenames = listdir(dataset_root)
     csv_file = None
     for filename in filenames:
@@ -42,7 +59,7 @@ def get_annotations():
             csv_file = filename
             break
     annotations = []
-    with open (dataset_root + '/' + csv_file, newline='') as csvfile:
+    with open (dataset_root / csv_file, newline='') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             annotations.append(row)
@@ -85,15 +102,14 @@ def parse_capture_file(capture_file):
     Player1.set_type(0 if capture_file_data[3].split(":")[2] == "Human" else 1)
     Player2.set_type(0 if capture_file_data[4].split(":")[2] == "Human" else 1)
 
+    # valid ip's and valid ports
     valid_ips = [Player1.get_ip(), Player2.get_ip()]
     valid_ports = [Player1.get_port(), Player2.get_port()]
+
     # go through the list of packets for the current .pcapng file
     # Read all the packets in .pcapng file an put them in a list - This might speed things up
-    if running_in_colab():
-        dataset_root = '/content/drive/MyDrive/Datasets/PICSC'
-    else:
-        dataset_root = '../dataset'
-    with PcapReader(dataset_root + '/' + capture_file) as pcap_reader:  # read a packet from the .pcapng
+    dataset_root = get_path()
+    with PcapReader( str(dataset_root / capture_file) ) as pcap_reader:  # read a packet from the .pcapng
         for pkt in pcap_reader:
            # packet needs to have IP, UDP and Raw Layers or else discard the packet
             if IP in pkt and UDP in pkt and Raw in pkt: # checking this here, no need to check this in other places
@@ -134,7 +150,6 @@ def parse_capture_file(capture_file):
                 elif dst_port == Player2.get_port() and dst_ip == Player2.get_ip():
                    # udp_packet_data = pkt[Raw].load  # Has the ENet Header + 0.AD payload data - bytes class. These are the raw bytes after UDP header.
                     Player2.append_data_packet((pkt, 'inbound'))
-
             # packet does not have IP or UPD or Raw layers
             else:
                 continue

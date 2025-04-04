@@ -21,3 +21,6 @@ The dataset are .pcapng files alongside an annotations file. The system will ext
 # Setup
 Install Anaconda or Minicoda from [https://www.anaconda.com/](https://www.anaconda.com/), create a new environment then use the requirements.txt to install dependencies.  
 This project has been developed using Pycharm.
+
+# Online Excel
+You need to fill [THIS EXCEL SHEEL](https://docs.google.com/spreadsheets/d/1sCSNc8fENn2IUW9N9jBTf3NwCcJGTEYj3rO-6mazUt4/edit?gid=816756393#gid=816756393) under your name.

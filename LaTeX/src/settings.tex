@@ -1,0 +1,262 @@
+
+\usepackage{soul} % Required for \hl
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage[romanian]{babel}
+\usepackage{graphicx}
+\usepackage{babel}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage{ragged2e} 
+\usepackage{pdfpages}
+%\usepackage{cite}
+\usepackage[backend=biber,style=numeric-comp,sorting=none,maxnames=99,minnames=99]{biblatex}
+\addbibresource{referinte.bib}
+\usepackage[justification=centering]{caption}
+\usepackage[hidelinks,
+  bookmarks,
+  bookmarksopen=true,
+  pdftitle={Licenta},
+  linktocpage]{hyperref}
+\usepackage{indentfirst}
+\usepackage{titlesec}
+\setlength{\parindent}{2em}
+\singlespacing
+
+\titleformat{\section}
+  {\fontsize{16}{20}\bfseries} % 16pt font size, bold
+  {\hspace*{1.25em}\thesection.}              % Section number with a period
+  {0.5em}                       % Space between number and title
+  {}
+  
+\titleformat{\subsection}
+  {\fontsize{14}{18}\bfseries} % 14pt font size, bold
+  {\hspace*{1.5em}\thesubsection.}           % Subsection number with a period
+  {0.5em}                     % Space between the number and the title
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%cod colorat
+\usepackage{listings}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{verbatim}
+ \usepackage{booktabs}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\usepackage{algorithm2e}
+\lstdefinestyle{mystyle}{
+	language=Matlab,
+ %   backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\scriptsize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+
+\usepackage{enumitem} % Provides customization for lists
+
+% Custom settings for enumerate environment
+\setlist[enumerate,1]{label=\alph*), %  lowercase letters with closing parenthesis
+                      leftmargin=2cm, % Left margin for the list
+                      labelsep=0.2cm, % Space between label and text
+                      itemsep=0.0em, % Space between items
+                      topsep=0cm, % Space above and below the list
+                      parsep=0cm} % Space between paragraphs inside items
+\setlist[enumerate,2]{label=\textbf{\textendash}, % Second level: en-dash
+                      leftmargin=0.5cm, % Left margin for the list
+                      labelsep=0.2cm, % Space between label and text
+                      itemsep=0.0em, % Space between items
+                      topsep=0cm, % Space above and below the list
+                      parsep=0cm} % Space between paragraphs
+
+\setlist[itemize,1]{label=\textbf{\textendash}, %  lowercase letters with closing parenthesis
+                      leftmargin=2cm, % Left margin for the list
+                      labelsep=0.2cm, % Space between label and text
+                      itemsep=0.0em, % Space between items
+                      topsep=0cm, % Space above and below the list
+                      parsep=0cm} % Space between paragraphs inside items
+\setlist[itemize,2]{label=\textbf{\textendash}, % Second level: en-dash
+                      leftmargin=0.75cm, % Left margin for the list
+                      labelsep=0.2cm, % Space between label and text
+                      itemsep=0.0em, % Space between items
+                      topsep=0cm, % Space above and below the list
+                      parsep=0cm} % Space between paragraphs
+
+\renewcommand{\labelitemi}{\textbf{--}} % First-level bullet
+
+
+\captionsetup[table]{
+    name=Tabelul,
+    labelfont=bf,           % Make the label (e.g., "Table 1") bold
+    textfont=normal,            % Make the caption text bold
+    skip=10pt,              % Add space between the caption and the table
+    belowskip=10pt,         % Add space after the caption
+    aboveskip=10pt          % Add space before the caption
+}
+
+\captionsetup[figure]{
+    labelfont=bf,           % Make the label (e.g., "Table 1") bold
+    textfont=normal,            % Make the caption text bold
+    skip=10pt,              % Add space between the caption and the table
+    belowskip=10pt,         % Add space after the caption
+    aboveskip=10pt          % Add space before the caption
+}
+
+
+
+% Format for URLs
+\DeclareFieldFormat{url}{Disponibil: \url{#1}}
+
+% Format for DOIs
+\DeclareFieldFormat{doi}{DOI: \href{https://doi.org/#1}{#1}}
+
+% Romanian month name fix (avoids abbreviation)
+\DefineBibliographyExtras{romanian}{%
+  \DeclareFieldFormat{month}{\mkbibmonth{#1}} % Ensures full month names
+}
+
+% Remove quotation marks from article, incollection, and inproceedings titles
+
+% Ensure journal and book titles are displayed correctly
+\DeclareFieldFormat[article,incollection,inproceedings]{title}{\mkbibquote{#1}}
+
+% Ensure books display correctly with emphasized titles
+\DeclareFieldFormat[book]{title}{\mkbibemph{#1}}
+\DefineBibliographyExtras{romanian}{%
+  \DeclareFieldFormat{month}{\mkbibmonth{#1}} % Ensures full month names
+}
+
+
+\DeclareBibliographyDriver{unpublished}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}% Print the author (***)
+  \setunit{\labelnamepunct}\newblock
+  \printfield{title}% Print the title
+  \setunit{\labelnamepunct}\newblock
+  \printfield{month}% Print the title
+  \setunit{\addspace}
+  \printfield{year}% Print the title
+  \setunit{\adddotspace}\newblock
+  \printtext{[Online]}% Add [Online]
+  \setunit{\labelnamepunct}\newblock
+  \printfield{doi}
+  \printfield{note}
+  \usebibmacro{finentry}}
+  
+
+
+  \DeclareBibliographyDriver{misc}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}% Print the author (***)
+  \setunit{\labelnamepunct}\newblock
+  \printfield{title}% Print the title
+  \setunit{\labelnamepunct}\newblock
+  \printfield{howpublished}
+  \setunit{\adddotspace}\newblock
+  \printtext{[Online]}% Add [Online]
+  \setunit{\addspace}
+  \printfield{url}
+  \printfield{note}
+  \usebibmacro{finentry}}
+
+  \DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}% Print the authors
+  \setunit{\labelnamepunct}\newblock
+  \printfield{title}% Print the title
+  \setunit{\addcomma\space}% Add a comma and space
+  \printtext{în }% Add "în" before editor
+  \printnames{editor}% Print the editors
+  \printtext{ (Eds.)}% Add "(Eds.)"
+  \setunit{\addspace}
+  \printfield{booktitle}% Print the booktitle
+  \setunit{\addspace}
+  \printfield{series}% Print the series name
+  \setunit{\addcomma\space}
+  \printfield{volume}% Print the volume
+  \setunit{\addcomma\space}
+  \printlist{publisher}% Print the publisher
+  \setunit{\addcomma\space}
+  \printlist{location}% Print the address
+  \setunit{\addcomma\space}
+  \printfield{pages}% Print the pages
+  \setunit{\addcomma\space}
+  \printfield{month}% Print the month
+  \setunit{\addspace}
+  \printfield{year}% Print the year
+  \usebibmacro{finentry}}
+
+  \DeclareBibliographyDriver{inproceedings}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}% Print the authors
+  \setunit{\labelnamepunct}\newblock
+  \printfield{title}% Print the title
+  \setunit{\addcomma\space}% Add a comma and space
+  \printfield{booktitle}% Print the booktitle
+  \setunit{\addspace}
+  \printfield{series}% Print the series name
+  \setunit{\addcomma\space}
+  \printfield{volume}% Print the volume
+  \setunit{\addcomma\space}
+  \printlist{publisher}% Print the publisher
+  \setunit{\addcomma\space}
+  \printlist{location}% Print the address
+  \setunit{\addcomma\space}
+  \printfield{pages}% Print the pages
+  \setunit{\addcomma\space}
+  \printfield{month}% Print the month
+  \setunit{\addspace}
+  \printfield{year}% Print the year
+  \usebibmacro{finentry}}
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}% Print the authors
+  \setunit{\labelnamepunct}\newblock
+  \printfield{title}% Print the title
+  \setunit{\addcomma\space}% Add a comma and space
+  \printfield{journaltitle}% Print the booktitle
+  \setunit{\addcomma\space}
+  \printtext{vol.}
+  \printfield{volume}% Print the volume
+  \setunit{\addcomma\space}
+  \printtext{nr.}
+  \printfield{number}
+  \setunit{\addcomma\space}
+  \printlist{publisher}% Print the publisher
+  \setunit{\addcomma\space}
+  \printlist{location}% Print the address
+  \setunit{\addcomma\space}
+  \printfield{pages}% Print the pages
+  \setunit{\addcomma\space}
+  \printfield{month}% Print the month
+  \setunit{\addspace}
+  \printfield{year}% Print the year
+  \usebibmacro{finentry}}
+
+\renewcommand*{\finalnamedelim}{\addcomma\space} % Changes "și" to "and" and adds commas
+\renewcommand*{\multinamedelim}{\addcomma\space}          % Adds commas between multiple authors

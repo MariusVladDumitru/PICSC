@@ -1,3 +1,6 @@
-# Ignored folders
-.idea
+# Ignored folders:
 code/__pycache__
+.idea
+LaTeX/.idea
+LaTeX/out
+

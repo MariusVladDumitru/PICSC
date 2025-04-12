@@ -19,6 +19,8 @@ for capture_file in capture_files:
     print(f"{capture_file} is done processing.")
 #     # aici faci vectorul mare de trasaturi care va fi trimis catre model. la vectoru asta contribuie fiecare capture file
 
+print(Player_Data)
+
 # X - matricea ce contine datele
 # Y - matricea ce contine addnotarile (label-urile) - clasele
 # OUT - matricea ce contine ceea ce a prezis modelul

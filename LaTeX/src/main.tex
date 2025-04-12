@@ -2,11 +2,100 @@
 \input{settings}
 \author{Marius-Vlad Dumitru}
 \date{\today}
-\title{Template pentru orice document de documentatie as avea nevoie}
+\title{Proiect integrator de cercetare în securitatea calculatoarelor - PICSC}
 
 \begin{document}
     \maketitle
+    \chapter{Introducere}
+        Proiectul propune dezvoltarea unui sistem de învățare automată pentru clasificarea, diferențierea, jucătorilor umani față de jucători non-umani(boți) pentru jocul de strategie 0AD, versiunea Alpha27: Agni, folosind traficul de rețea generat de joc.\\
+        0AD este un joc de tip RTS, similar cu Age of Empires, unde doi sau mai mulți jucători concurează pentru atingerea unuia sau mai multor obiective, de regulă înfrângerea tuturor oponenților.\\
+        Specific genului RTS, fiecare jucător controlează mai multe tipuri de clădiri și unități specifice unei anumite "rase", colectează resurse, își mărește capabilitățile militare, pentru atingerea unuia sau mai multor obiective finale, uzual înfrângerea oponenților.\\
+        Un meci se desfășoară în interiorul unui mediu virtual denumit "hartă" cu geografie diversă precum dealuri, munți, ape curgătoare, etc.
 
-    Foloseste acest template pentru orice document de documentatie ai avea nevoie.
-    Acest template foloseste setarile din template-ul pentru teza de dizertatie de la BIOSINF.
+        \section{Specificațiile proiectului.}
+            La modul general, proiectul își propune dezvoltarea unui clasificator folosind învățarea automată pentru a determina dacă un jucător dat este jucător uman sau non-uman(bot) având la dispozitie traficul de rețea generat de joc.\\
+            Pentru simplitate, voi considera adevărate următoarele:
+                \begin{itemize}
+                    \item Un meci va fi format din maxim doi jucători: \textbf{Jucător Uman vs Jucător Uman} sau \textbf{Jucător Uman vs Bot}.
+
+                    \item Bot-ul va fi întotdeauna format din AI-ul default al jocului denumit \textbf{PetraBot} cu diverse setări de dificultate.
+                \end{itemize}
+            Nu voi lua în considerare cazul Bot vs Bot pentru că nu pot face captura traficului de rețea.\\
+            Sistemul va primi la intrare trăsăturile asociate unui jucători, iar ieșirea sistemului va fi o predicție a jucătorului la una din cele două clase, jucător uman sau bot.\\
+            Clasa pozitivă(clasa 0) va reprezenta jucătorul uman iar clasa negativă(clasa 1) va reprezenta jucătorul non-uman(Bot).
+
+    \chapter{Setul de date}
+        Sistemul are la dispozitie traficul de rețea generat de catre joc. Traficul de rețea va reprezenta comunicația dintre cei doi jucători de-a lungul desfășurării unui meci.\\
+        Setul de date conține două mari componente:
+            \begin{itemize}
+                \item Trafic de rețea, de-a lungul unui meci, salvat în fișiere tip \textbf{.pcapng}. Un singur fișier .pcapng conține trafic de rețea pentru un singur meci complet.
+
+                \item Adnotarea setului de date, disponibilă în fișierul \textbf{Addnotations.csv}.
+            \end{itemize}
+        Intregul set de date, împreună cu adnotarea, se află în directorul \textit{dataset}.\\
+        Toată comunicația relevantă pentru meci se face pe \textit{protocolul udp}. Din acest motiv, porturile specificate în adnotare sunt porturi udp, iar traficul salvat este trafic udp.\\
+        Se mai folosește si un port tcp exclusiv pentru conexiunea la lobby-ul oficial, dar nu este relevant.
+
+       \section{Colectarea setului de date}
+            Din cauza faptului că nu am găsit un set de date potrivit, am fost nevoit să îmi construiesc propriul set de date.\\
+            După configurarea și acceptarea unui meci de tip \textit{Multiplayer} de către ambii jucători, jocul creează o conexiune de tip \textit{peer-to-peer} între jucători, indiferent cum sa configurat inițial meciul.
+            Colectarea setului de date a însemnat inițierea unui meci de tip \textit{Multiplayer} dintre mine și un alt oponent uman sau AI-ul default PetraBot, captarea și salvarea traficului de rețea în fișiere de tip .pcapng folosind wireshark.\\
+            Setup folosit pentru colectarea setului de date:
+                \begin{itemize}
+                    \item \textbf{Pentru meciuri contra unui alt oponent uman}, am folosit un singur calculator pe care rulează o singură instanță a jocului.\\
+                    Am folosit BitDefender Firewall pentru a bloca întreg traficul de rețea, fiind permis trafic doar de la executabilul jocului("pyrogenesys.exe").\\
+                    Am observat că BitDefender Firewall mai permitea, pe langă executabilul jocului, si putin trafic de la alte executabile ale Windows-ului necesare pentru menținerea conexiunii la internet. Cu alte cuvinte, într-un fișier .pcapng, pe langă traficul util, există și un mic trafic parazit, pe care îl voi ignora ulterior.\\
+                    Am folosit lobby-ul oficial al jocului pentru a găsi alți jucători, fie am creat si configurat eu un nou meci \textit{Multiplayer} în lobby, fie m-am conectat la un meci creat și configurat de altcineva în lobby.
+
+                    \item \textbf{Pentru meciuri contra Bot(PetraBot)} am folosit două calculatoare, legate în rețeaua locală, fiecare rulând o singură instanță a jocului. Calculatoarele au alocate ip-uri din clasa \textit{192.168.XX.XX}.\\
+                    Pe ambele calculatoare, am folosit BitDefender Firewall pentru a bloca întreg traficul de rețea, cu mici exceptii(aceeași mențiune ca în situația anterioară).\\
+                    Pe unul dintre calculatoare am rulat o instanță a jocului pe care am creat un lobby local unde am configurat un nou meci de \textit{Multiplayer}. Acesta reprezintă serverul.\\
+                    Pe al doilea calculator rulează o altă instanță a jocului care se conectează la server, aceasta fiind clientul, dar și aplicația wireshark care captează și salvează traficul de rețea al unui meci 1v1.
+                    Toate detaliile legate de meci(harta, numărul de jucători, etc.), de configurația PetraBot, sunt făcute pe server.
+                \end{itemize}
+            Atunci când un lobby local este configurat pentru un meci de tip \textbf{Bot vs Bot}, eu sunt conectat la meci în modul \textit{observer} și nu am certitudinea că traficul de rețea descrie precis ceea ce se petrece în joc. Din acest motiv am decis să nu iau în considerare situația \textbf{Bot vs Bot}.
+            Un singur fișier .pcapng conține un singur meci 1v1 complet. În cazul în care nu am reușit să termin un meci, nu am salvat traficul aferent.
+
+       \section{Adnotarea setului de date}
+            Adnotarea setului de date se face în fișierul \textbf{Annotations.csv} și cuprinde următoarele informații:
+            \begin{enumerate}
+                \item \textbf{Filename}: reprezintă numele fișierului. Este de forma \textit{XX\_Human\_vs\_AA.pcapng}, unde:\\
+                \textit{XX} - reprezinta un index(Ex: 001, 002, 003, etc.)\\
+                \textit{AA} - reprezinta Human sau Bot\\
+                Numele fisierului indică tipul de meci, Human vs Human sau Human vs Bot.
+
+                \item \textbf{GameType}: reprezintă tipul de joc - va fi întotdeauna 1v1.
+
+                \item \textbf{Harta}: reprezintă numele hărții pe care se joacă meciul.
+
+                \item \textbf{P1\_IP:P1\_Port:Type}: reprezintă(în această ordine) ip-ul primului jucător, portul primului jucător, tipul primului jucător(Human sau Bot)
+
+                \item \textbf{P2\_IP:P2\_Port:Type}: reprezintă(în această ordine) ip-ul jucătorului doi, portul jucătorului doi, tipul jucătorului doi(Human sau Bot)
+
+                \item \textbf{Bot\_Difficulty}: dificultatea PetraBot. Poate avea valorile \textit{Sandbox}, \textit{Very Easy}, \textit{Easy}, \textit{Medium}, \textit{Hard}, \textit{Very Hard}, \textit{None}. Cu cât dificultatea este mai mare cu atât PetraBot este mai performant.
+
+                \item \textbf{Bot\_Behavior}: modul de joc(comportamentul) PetraBot. Poate avea valorile \textit{Random}, \textit{Balanced}, \textit{Defensive}, \textit{Aggressive}, \textit{None}. Reprezintă stilul de joc al PetraBot.
+
+                \item \textbf{Completed}: indică dacă meciul este complet sau nu. Este posibil ca, pentru unele meciuri, să nu fi jucat până la capăt și am avut nevoie de un indicator pentru așa ceva. Valori:\\
+                \textit{True} - meciul a fost jucat până la capăt, meciul este complet, nu există porțiuni lipsă.\\
+                \textit{False} - meciul este incomplet, nu l-am jucat până la capăt.\\
+                În principiu, am salvat trafic pentru meciuri complete, dar dacă am făcut o excepție si am salvat trafic și pentru meciuri incomplete, atunci acest indicator face diferența.
+            \end{enumerate}
+
+    \chapter{Trăsături}
+        \section{Extragerea Trăsăturilor}
+    \chapter{Modelul}
+        \section{Arhitectura Modelului}
+        \section{Antrenarea Modelului}
+        \section{Evaluarea Modelului - Metrici de performantă}
+    \chapter{Tehnici de integrare}
+        Aici scrii despre cum s-ar putea integra sistemul tau in ceva mai mare, cum ar putea fi o componenta in ceva mai mare. CUM SE FOLOSESTE PRACTIC SISTEMUL.
+    \chapter{Monitorizarea performanței}
+        Teoretic. Ex: capacitatea sistemului( lucru cu o anumita cantitate fixa de trafic. Capacitatea maxima a sistemului pt un setup dat. Banda X, procesor y. Ce banda poate folosi sistemul.  Capacitatea sistemului, intr-un scenariu real, de a procesa trafic. Performanta in functie de variatia traficului de retea. Daca traficul de retea variaza, ce face sistemul ? (cel putin la nivel teoretic). CUM REACTIONEAZA SISTEMUL LA TRAFIC VARIABIL ?? Cum reactioneaza resursele(procesor, memorie, etc) la trafic variabil. AKA STUDIU de fezabilitate teoretic.
+        Studiul teoretic despre cum se comporta sistemul atunci cand traficul de retea este variabil aka studio de fezabilitate teoretic.
+
+    \chapter{ToDo}
+    \begin{enumerate}
+        \item
+    \end{enumerate}
 \end{document}
